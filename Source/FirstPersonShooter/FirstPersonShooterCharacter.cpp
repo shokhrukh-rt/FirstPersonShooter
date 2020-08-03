@@ -1,20 +1,20 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "FirstPersonShooterCharacter.h"
-#include "FirstPersonShooterProjectile.h"
-#include "Animation/AnimInstance.h"
+//#include "FirstPersonShooterProjectile.h"
+//#include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
-#include "MotionControllerComponent.h"
-#include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+#include "Rifle.h"
+//#include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
-//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////  (X=32.365479,Y=32.190006,Z=128.441833)
 // AFirstPersonShooterCharacter
 
 AFirstPersonShooterCharacter::AFirstPersonShooterCharacter()
@@ -54,11 +54,19 @@ void AFirstPersonShooterCharacter::BeginPlay()
 	Super::BeginPlay();
 	GetMesh()->SetOwnerNoSee(true);
 
+	Rifle = GetWorld()->SpawnActor<ARifle>(RifleClass);
+	Rifle3P = GetWorld()->SpawnActor<ARifle>(RifleClass3P);
+	Rifle->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	//Rifle->SetOnlyOwnerSee(true);
+	Rifle3P->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Rifle->SetOwner(this);
+	Rifle3P->SetOwner(this);
+	
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 
 }
 
-//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////  
 // Input
 
 void AFirstPersonShooterCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)

@@ -21,6 +21,18 @@ class AFirstPersonShooterCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ARifle> RifleClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ARifle> RifleClass3P;
+
+	UPROPERTY()
+	class ARifle* Rifle;
+
+	UPROPERTY()
+	class ARifle* Rifle3P;
+
 public:
 	AFirstPersonShooterCharacter();
 
