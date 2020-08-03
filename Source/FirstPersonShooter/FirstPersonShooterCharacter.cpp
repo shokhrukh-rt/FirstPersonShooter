@@ -29,7 +29,7 @@ AFirstPersonShooterCharacter::AFirstPersonShooterCharacter()
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, BaseEyeHeight+50.f)); // Position the camera
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, BaseEyeHeight+70.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 	FirstPersonCameraComponent->bConstrainAspectRatio = true;
 	FirstPersonCameraComponent->SetAspectRatio(16/9);
@@ -55,12 +55,9 @@ void AFirstPersonShooterCharacter::BeginPlay()
 	GetMesh()->SetOwnerNoSee(true);
 
 	Rifle = GetWorld()->SpawnActor<ARifle>(RifleClass);
-	Rifle3P = GetWorld()->SpawnActor<ARifle>(RifleClass3P);
-	Rifle->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-	//Rifle->SetOnlyOwnerSee(true);
-	Rifle3P->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Rifle->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));	
 	Rifle->SetOwner(this);
-	Rifle3P->SetOwner(this);
+	
 	
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 
