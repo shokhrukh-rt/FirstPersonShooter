@@ -25,26 +25,12 @@ class AFirstPersonShooterCharacter : public ACharacter
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ARifle> RifleClass;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class ARifle> RifleClass3P;
-
 	UPROPERTY()
 	class ARifle* Rifle;
 	
-	/*
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class ARifle> RifleClass3P;
-
-	UPROPERTY()
-	class ARifle* Rifle3P;
-	*/
-
-	UPROPERTY()
-	class ARifle* Rifle3P;
 
 public:
 	AFirstPersonShooterCharacter();
-
 protected:
 	virtual void BeginPlay();
 
@@ -88,7 +74,6 @@ protected:
 	void TurnLeftRight(float Rate);
 	void LookUpDown(float Rate);
 
-	void SetShiftDown();
 	
 protected:
 	// APawn interface

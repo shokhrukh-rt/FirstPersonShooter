@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Rifle.h"
@@ -82,9 +83,8 @@ void AFirstPersonShooterCharacter::SetupPlayerInputComponent(class UInputCompone
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonShooterCharacter::OnFire);
-	PlayerInputComponent->BindAction("ShiftWalk", IE_Pressed, this, &AFirstPersonShooterCharacter::SetShiftDown);
-
-
+	
+	
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFirstPersonShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFirstPersonShooterCharacter::MoveRight);
@@ -191,8 +191,4 @@ void AFirstPersonShooterCharacter::LookUpDown(float Rate)
 	AddControllerPitchInput(Rate * Sensitivity);
 }
 
-void AFirstPersonShooterCharacter::SetShiftDown()
-{
-	
-}
 
