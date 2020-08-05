@@ -7,10 +7,11 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/InputSettings.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Rifle.h"
-//#include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -29,7 +30,7 @@ AFirstPersonShooterCharacter::AFirstPersonShooterCharacter()
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, BaseEyeHeight+50.f)); // Position the camera
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, BaseEyeHeight+70.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 	FirstPersonCameraComponent->bConstrainAspectRatio = true;
 	FirstPersonCameraComponent->SetAspectRatio(16/9);
@@ -55,13 +56,15 @@ void AFirstPersonShooterCharacter::BeginPlay()
 	GetMesh()->SetOwnerNoSee(true);
 
 	Rifle = GetWorld()->SpawnActor<ARifle>(RifleClass);
-	Rifle3P = GetWorld()->SpawnActor<ARifle>(RifleClass3P);
 	Rifle->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
-	//Rifle->SetOnlyOwnerSee(true);
-	Rifle3P->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Rifle->GunMesh->SetOnlyOwnerSee(true);
 	Rifle->SetOwner(this);
+/*
+	Rifle3P = GetWorld()->SpawnActor<ARifle>(RifleClass3P);
+	Rifle3P->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Rifle3P->GunMesh->SetOwnerNoSee(true);
 	Rifle3P->SetOwner(this);
-	
+*/	
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 
 }
@@ -80,8 +83,8 @@ void AFirstPersonShooterCharacter::SetupPlayerInputComponent(class UInputCompone
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonShooterCharacter::OnFire);
-
-
+	
+	
 	// Bind movement events
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFirstPersonShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFirstPersonShooterCharacter::MoveRight);
@@ -187,4 +190,5 @@ void AFirstPersonShooterCharacter::LookUpDown(float Rate)
 	if (Sensitivity > 7.f) { Sensitivity = 7.f; }
 	AddControllerPitchInput(Rate * Sensitivity);
 }
+
 
