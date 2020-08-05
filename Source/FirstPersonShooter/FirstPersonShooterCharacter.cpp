@@ -10,7 +10,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Rifle.h"
-//#include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
+
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
@@ -55,10 +55,15 @@ void AFirstPersonShooterCharacter::BeginPlay()
 	GetMesh()->SetOwnerNoSee(true);
 
 	Rifle = GetWorld()->SpawnActor<ARifle>(RifleClass);
-	Rifle->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));	
+	Rifle->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Rifle->GunMesh->SetOnlyOwnerSee(true);
 	Rifle->SetOwner(this);
-	
-	
+/*
+	Rifle3P = GetWorld()->SpawnActor<ARifle>(RifleClass3P);
+	Rifle3P->AttachToComponent(GetMesh(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+	Rifle3P->GunMesh->SetOwnerNoSee(true);
+	Rifle3P->SetOwner(this);
+*/	
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 
 }
@@ -77,6 +82,7 @@ void AFirstPersonShooterCharacter::SetupPlayerInputComponent(class UInputCompone
 
 	// Bind fire event
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFirstPersonShooterCharacter::OnFire);
+	PlayerInputComponent->BindAction("ShiftWalk", IE_Pressed, this, &AFirstPersonShooterCharacter::SetShiftDown);
 
 
 	// Bind movement events
@@ -183,5 +189,10 @@ void AFirstPersonShooterCharacter::LookUpDown(float Rate)
 	if (Sensitivity <= 0.f) { Sensitivity = 0.01f; }
 	if (Sensitivity > 7.f) { Sensitivity = 7.f; }
 	AddControllerPitchInput(Rate * Sensitivity);
+}
+
+void AFirstPersonShooterCharacter::SetShiftDown()
+{
+	
 }
 

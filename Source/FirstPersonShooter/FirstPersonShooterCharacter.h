@@ -21,11 +21,20 @@ class AFirstPersonShooterCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FirstPersonCameraComponent;
 
+	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class ARifle> RifleClass;
 
 	UPROPERTY()
 	class ARifle* Rifle;
+	
+	/*
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class ARifle> RifleClass3P;
+
+	UPROPERTY()
+	class ARifle* Rifle3P;
+	*/
 
 public:
 	AFirstPersonShooterCharacter();
@@ -72,6 +81,8 @@ protected:
 
 	void TurnLeftRight(float Rate);
 	void LookUpDown(float Rate);
+
+	void SetShiftDown();
 	
 protected:
 	// APawn interface

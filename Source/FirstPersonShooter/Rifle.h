@@ -26,7 +26,7 @@ public:
 
 	
 
-private:
+public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 
