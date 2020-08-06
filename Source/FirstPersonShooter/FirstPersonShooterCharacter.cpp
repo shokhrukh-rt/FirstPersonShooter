@@ -15,7 +15,7 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
 
-//////////////////////////////////////////////////////////////////////////  (X=32.365479,Y=32.190006,Z=128.441833)
+//////////////////////////////////////////////////////////////////////////  
 // AFirstPersonShooterCharacter
 
 AFirstPersonShooterCharacter::AFirstPersonShooterCharacter()
@@ -100,6 +100,7 @@ void AFirstPersonShooterCharacter::SetupPlayerInputComponent(class UInputCompone
 
 void AFirstPersonShooterCharacter::OnFire()
 {
+	Rifle->Fire();
 	// try and fire a projectile
 	/*if (ProjectileClass != NULL)
 	{

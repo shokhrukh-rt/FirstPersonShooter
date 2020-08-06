@@ -3,6 +3,8 @@
 
 #include "Rifle.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 ARifle::ARifle()
@@ -17,6 +19,38 @@ ARifle::ARifle()
 
 void ARifle::Fire()
 {
+	if(MuzzleFlash != nullptr)
+	{
+		UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, GunMesh, TEXT("Muzzle"));
+	}
+	
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	AController* OwnerController = OwnerPawn->GetController();
+	if (OwnerController == nullptr)return;
+
+	FVector Location;
+	FRotator Rotation;
+	OwnerController->GetPlayerViewPoint(Location, Rotation);
+
+	FVector End = Location + Rotation.Vector() * MaxRange;
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+
+	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel2, Params);
+	if (bSuccess) 
+	{
+
+		FVector ShotDirection = Rotation.Vector();
+
+		if (ImpactEffect != nullptr)
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
+			
+		}
+	}
+
 }
 
 // Called when the game starts or when spawned
